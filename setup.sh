@@ -13,7 +13,7 @@ if [[ "$1" == "full" ]]; then
     ./scripts/parse-legislators.py
     ./scripts/parse-bills.py
     ./scripts/parse-votes.py
-    #./scripts/key-votes.py
+    ./scripts/key-votes.py
     psql -af sql/create.sql $dbname
     psql -af sql/load.sql $dbname
     #psql -af sql/common_votes.sql $dbname
