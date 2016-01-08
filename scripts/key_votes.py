@@ -1,5 +1,5 @@
 from BeautifulSoup import BeautifulSoup
-import urllib2, json, re, string
+import urllib.request, urllib.error, urllib.parse, json, re, string
 
 KEY_BILLS_JSON = 'data/key_bills.json'
 KEY_VOTES_JSON = 'data/key_votes.json'
@@ -123,9 +123,9 @@ if __name__ == '__main__':
 
 
 	for url in URLS:
-		print '***** Getting votes from ' + url
+		print(('***** Getting votes from ' + url))
 
-		doc = urllib2.urlopen(url)
+		doc = urllib.request.urlopen(url)
 		soup = BeautifulSoup(doc)
 
 		assert('house' in url or 'senate' in url)

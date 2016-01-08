@@ -27,7 +27,7 @@ def parse_bills_in_dir(dir):
             with codecs.open(os.path.join(root, filename), 'r', 'utf-8') as jsonfile:
                 bill = json.load(jsonfile)
 
-                print >> BILLS, u'{}|{}|{}|{}|{}|{}|{}|{}|{}'.format(
+                print('{}|{}|{}|{}|{}|{}|{}|{}|{}'.format(
                     bill['bill_id'],
                     bill['congress'],
                     bill['bill_type'],
@@ -36,18 +36,18 @@ def parse_bills_in_dir(dir):
                     bill['status_at'],
                     bill['official_title'],
                     bill['popular_title'] if bill['popular_title'] else '',
-                    bill['short_title'] if bill['short_title'] else '')
+                    bill['short_title'] if bill['short_title'] else ''), file=BILLS)
 
                 if bill['subjects']:
                     for subject in bill['subjects']:
-                        print >> SUBJECTS, u'{}|{}'.format(
+                        print('{}|{}'.format(
                             bill['bill_id'],
-                            subject)
+                            subject), file=SUBJECTS)
 
 # ['bills-113', 'bills-112', 'bills-113', ...]
-bill_dirs = filter(lambda x: x.startswith('bills'), os.walk(ROOT).next()[1])
+bill_dirs = [x for x in next(os.walk(ROOT))[1] if x.startswith('bills')]
 for bill_dir in bill_dirs:
-    print '***** Parsing bills in %s ...' % (bill_dir)
+    print('***** Parsing bills in %s ...' % (bill_dir))
     parse_bills_in_dir(bill_dir)
 
 BILLS.close()

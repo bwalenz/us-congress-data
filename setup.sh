@@ -8,7 +8,7 @@ if [[ "$1" == "full" ]]; then
     dropdb $dbname
     createdb --locale=en_US.utf8 --encoding=UTF8 --template=template0 $dbname
     mkdir -p raw
-    ./scripts/download.sh raw 2011 2014
+    ./scripts/download.sh raw 2013 2014
     mkdir -p data
     ./scripts/parse-legislators.py
     ./scripts/parse-bills.py

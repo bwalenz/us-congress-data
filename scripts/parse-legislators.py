@@ -24,11 +24,11 @@ LEADERSHIP = codecs.open(data_path + '/leadership.dat', 'w', 'utf-8')
 states = set()
 
 def print_person(person):
-    print u'{} {}'.format(person['name']['first'], person['name']['last'])
+    print('{} {}'.format(person['name']['first'], person['name']['last']))
     # Use of .get(key, '') below allows us to set the default to ''
     # (which will be interpreted by the database loader as NULL) if
     # the key is missing:
-    print >> PERSONS, u'{}|{}|{}|{}|{}|{}|{}|{}'.format(
+    print('{}|{}|{}|{}|{}|{}|{}|{}'.format(
         person['id']['bioguide'],
         person['id']['govtrack'],
         person['id'].get('lis', ''), 
@@ -36,29 +36,29 @@ def print_person(person):
         person['name'].get('middle', ''),
         person['name']['last'],
         person['bio'].get('birthday', '') if 'bio' in person else '',
-        person['bio'].get('gender', '') if 'bio' in person else '')
+        person['bio'].get('gender', '') if 'bio' in person else ''), file=PERSONS)
     for role in person['terms']:
         if role['state'] not in states:
             states.add(role['state'])
-        print >> PERSON_ROLES, u'{}|{}|{}|{}|{}|{}|{}'.format(
+        print('{}|{}|{}|{}|{}|{}|{}'.format(
             person['id']['bioguide'],
             role['type'],
             role['start'],
             role['end'],
             role['state'], 
             role.get('district', ''),
-            role.get('party', ''))
+            role.get('party', '')), file=PERSON_ROLES)
     for leader in person.get('leadership_roles', []):
-		print >> LEADERSHIP, u'{}|{}|{}|{}|{}'.format(
-		    person['id']['bioguide'],
+                print('{}|{}|{}|{}|{}'.format(
+                    person['id']['bioguide'],
             leader['title'],
-			leader['chamber'],
-			leader['start'],
-			leader.get('end', ''))
+                        leader['chamber'],
+                        leader['start'],
+                        leader.get('end', '')), file=LEADERSHIP)
 
 # Process current legislators:
-print '***** loading current legislators *****'
-persons = yaml.load(file(raw_path + '/legislators-current.yaml', 'r'),
+print("*****loading current legislators*****")
+persons = yaml.load(open(raw_path + '/legislators-current.yaml', 'r'),
                     Loader=Loader)
 for person in persons:
     print_person(person)
@@ -81,8 +81,8 @@ def is_relevant(person):
     #            person['terms'])
 
 # Process non-current legistrators:
-print '***** loading historical legislators *****'
-persons = yaml.load(file(raw_path + '/legislators-historical.yaml', 'r'),
+print("***** loading historical legislators *****")
+persons = yaml.load(open(raw_path + '/legislators-historical.yaml', 'r'),
                     Loader=Loader)
 for person in persons:
     if is_relevant(person):
@@ -93,5 +93,5 @@ PERSON_ROLES.close()
 
 # Print out the states we found:
 for state in sorted(states):
-    print >> STATES, u'{}'.format(state)
+    print('{}'.format(state), file=STATES)
 STATES.close()
